@@ -1,22 +1,16 @@
-﻿using Il2CppInterop.Runtime.Attributes;
-using UnityEngine;
+﻿using UnityEngine;
 
 using NEP.Hitmarkers.Data;
 
 namespace NEP.Hitmarkers
 {
-    [MelonLoader.RegisterTypeInIl2Cpp]
     public class Hitmarker : MonoBehaviour
     {
-        public Hitmarker(System.IntPtr ptr) : base(ptr) { }
-
-        [HideFromIl2Cpp]
         public AudioClip[] HitAudio
         {
             get => _hitAudio;
         }
 
-        [HideFromIl2Cpp]
         public AudioClip[] FinisherAudio
         {
             get => _finisherAudio;
@@ -57,6 +51,7 @@ namespace NEP.Hitmarkers
             _finisherAnimator = _finisherObject.GetComponent<Animator>();
 
             _source = transform.Find("Source").GetComponent<AudioSource>();
+            _source.playOnAwake = true;
 
             _markerObject.SetActive(false);
             _finisherObject.SetActive(false);
@@ -68,7 +63,7 @@ namespace NEP.Hitmarkers
 
         private void OnEnable()
         {
-            SetTextures();
+            //SetTextures();
             SetAudio();
             PlayAnimation();
             PlayAudio();
@@ -98,7 +93,7 @@ namespace NEP.Hitmarkers
         {
             if (gameObject.activeInHierarchy)
             {
-                transform.LookAt(BoneLib.Player.Head);
+                transform.LookAt(PlayerUtils.Player.transform.position);
 
                 _timerHide += Time.deltaTime;
 
@@ -124,7 +119,8 @@ namespace NEP.Hitmarkers
                 return;
             }
 
-            BoneLib.Audio.Play2DOneShot(selectedList, BoneLib.Audio.UI, Options.HitmarkerSFX, Options.HitmarkerPitch);
+            _source.clip = selectedList[Random.Range(0, selectedList.Length)];
+            _source.Play();
         }
 
         private void SetAudio()

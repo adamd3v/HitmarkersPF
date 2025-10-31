@@ -7,8 +7,6 @@ using UnityEngine;
 using MelonLoader.Utils;
 using MelonLoader;
 
-using BoneLib;
-
 namespace NEP.Hitmarkers.Data
 {
     public static class DataManager
@@ -122,7 +120,7 @@ namespace NEP.Hitmarkers.Data
         private static void LoadBundles()
         {
             string bundleNamespace = "NEP.Hitmarkers.Resources.";
-            string bundleName = HelperMethods.IsAndroid() ? "resources_quest.pack" : "resources_pcvr.pack";
+            string bundleName = "resources_pcvr.pack";
             _bundle = HelperMethods.LoadEmbeddedAssetBundle(Assembly.GetExecutingAssembly(), bundleNamespace + bundleName);
             _bundleObjects = _bundle.LoadAllAssets();
         }
@@ -145,12 +143,10 @@ namespace NEP.Hitmarkers.Data
         {
             foreach (var obj in _bundleObjects)
             {
-                var target = obj.TryCast<T>();
-
-                if (target != null)
+                if (obj is T tObj)
                 {
-                    target.hideFlags = HideFlags.DontUnloadUnusedAsset;
-                    list.Add(target);
+                    tObj.hideFlags = HideFlags.DontUnloadUnusedAsset;
+                    list.Add(tObj);
                 }
             }
         }
@@ -184,6 +180,7 @@ namespace NEP.Hitmarkers.Data
 
         private static AudioClip[] LoadClips(string skinPath, string searchTerm)
         {
+            Main.Logger.Msg("1");
             string sfxPath = Path.Combine(skinPath, "SFX");
 
             if (!Directory.Exists(sfxPath))
@@ -194,11 +191,15 @@ namespace NEP.Hitmarkers.Data
             string[] files = Directory.GetFiles(sfxPath);
             List<AudioClip> clips = new List<AudioClip>();
 
+            Main.Logger.Msg("2");
+
             for (int i = 0; i < files.Length; i++)
             {
+                Main.Logger.Msg("3");
                 if (new DirectoryInfo(files[i]).Name.StartsWith(searchTerm))
                 {
                     clips.Add(AudioImportLib.API.LoadAudioClip(files[i], true));
+                    Main.Logger.Msg("4");
                 }
             }
 

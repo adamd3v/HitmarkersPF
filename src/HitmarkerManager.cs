@@ -2,19 +2,14 @@
 
 using UnityEngine;
 
-using BoneLib;
-using Il2CppInterop.Runtime.Attributes;
 using NEP.Hitmarkers.Data;
 
 namespace NEP.Hitmarkers
 {
     public static class HitmarkerManager
     {
-        [HideFromIl2Cpp]
         public static MarkerSkin Skin { get; private set; }
-        [HideFromIl2Cpp]
         public static MarkerSkin FavoriteSkin => DataManager.GetMarkerSkin(Options.FavoriteSkin);
-        [HideFromIl2Cpp]
         public static MarkerSkin DefaultSkin => DataManager.GetMarkerSkin("Default");
 
         private static List<Hitmarker> _hitmarkers;
@@ -93,7 +88,7 @@ namespace NEP.Hitmarkers
             marker.transform.position = position;
             marker.gameObject.SetActive(true);
 
-            float distance = Vector3.Distance(marker.transform.position, Player.Head.position);
+            float distance = Vector3.Distance(marker.transform.position, PlayerUtils.Player.transform.position);
 
             if(distance < 5)
             {
