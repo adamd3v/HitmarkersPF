@@ -51,7 +51,7 @@ namespace NEP.Hitmarkers
             marker.transform.parent = !isFinisher ? _poolHitmarker : _poolFinisher;
 
             // stops the loudest noise i've ever heard
-            marker.gameObject.SetActive(false);
+            marker.gameObject.SetActive(true);
 
             return marker.AddComponent<Hitmarker>();
         }

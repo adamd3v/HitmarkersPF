@@ -59,12 +59,14 @@ namespace NEP.Hitmarkers
             _markerMaterial = _markerObject.GetComponent<MeshRenderer>().material;
             _finisherMaterial = _finisherObject.GetComponent<MeshRenderer>().material;
             _finisherSkullMaterial = _finisherObject.transform.Find("DeathSkull").GetComponent<MeshRenderer>().material;
+            
+            SetAudio();
+            gameObject.SetActive(false);
         }
 
         private void OnEnable()
         {
             //SetTextures();
-            SetAudio();
             PlayAnimation();
             PlayAudio();
         }
@@ -115,10 +117,8 @@ namespace NEP.Hitmarkers
             var selectedList = !_isFinisher ? _hitAudio : _finisherAudio;
 
             if (selectedList == null)
-            {
                 return;
-            }
-
+            
             _source.clip = selectedList[Random.Range(0, selectedList.Length)];
             _source.Play();
         }
@@ -129,13 +129,7 @@ namespace NEP.Hitmarkers
             MarkerSkin favoriteSkin = HitmarkerManager.FavoriteSkin;
             MarkerSkin defaultSkin = HitmarkerManager.DefaultSkin;
 
-            if (skin == null)
-            {
-                _hitAudio = favoriteSkin.HitClips;
-                _finisherAudio = favoriteSkin.FinisherClips;
-                return;
-            }
-            else if (skin == null &&  favoriteSkin == null)
+            if (skin == null || favoriteSkin == null)
             {
                 _hitAudio = defaultSkin.HitClips;
                 _finisherAudio = defaultSkin.FinisherClips;

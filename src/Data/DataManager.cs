@@ -180,7 +180,6 @@ namespace NEP.Hitmarkers.Data
 
         private static AudioClip[] LoadClips(string skinPath, string searchTerm)
         {
-            Main.Logger.Msg("1");
             string sfxPath = Path.Combine(skinPath, "SFX");
 
             if (!Directory.Exists(sfxPath))
@@ -191,15 +190,11 @@ namespace NEP.Hitmarkers.Data
             string[] files = Directory.GetFiles(sfxPath);
             List<AudioClip> clips = new List<AudioClip>();
 
-            Main.Logger.Msg("2");
-
             for (int i = 0; i < files.Length; i++)
             {
-                Main.Logger.Msg("3");
                 if (new DirectoryInfo(files[i]).Name.StartsWith(searchTerm))
                 {
                     clips.Add(AudioImportLib.API.LoadAudioClip(files[i], true));
-                    Main.Logger.Msg("4");
                 }
             }
 
